@@ -8,10 +8,20 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      animation: {
+        "rainbow-text": "rainbow-text 1s linear infinite",
+      },
+      keyframes: {
+        "rainbow-text": {
+          "0%": { color: "red" },
+          "14%": { color: "orange" },
+          "28%": { color: "yellow" },
+          "42%": { color: "green" },
+          "56%": { color: "blue" },
+          "70%": { color: "indigo" },
+          "84%": { color: "purple" },
+          "100%": { color: "red" },
+        },
       },
     },
   },
