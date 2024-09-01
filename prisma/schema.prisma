@@ -19,4 +19,12 @@ model Product {
   price Float @db.Float
   description String
   purchased Boolean @default(false)
+  images ProductImage[]
+}
+
+model ProductImage {
+  int Int @id @default(autoincrement())
+  product Product @relation(fields: [productId], references: [id])
+  productId Int
+  publicId String
 }

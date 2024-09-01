@@ -2,17 +2,30 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-async function main() {
-  const allProducts = await prisma.product.findMany();
-  console.dir(allProducts);
+export async function getAllProducts() {
+  try {
+    const allProducts = await prisma.product.findMany();
+    return allProducts;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
-main()
-  .then(async () => {
+export async function getProductImagesByProductId(productId: number) {
+  try {
+    const images = await prisma.productImage.findMany({
+      where: {
+        productId,
+      },
+    });
+    return images;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  } finally {
     await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+  }
+}

@@ -1,5 +1,11 @@
 "use client";
 
+import { getCldImageUrl } from "next-cloudinary";
+
+const url = getCldImageUrl({
+  src: "keao4x2qmjuqcofl45rl",
+});
+
 export default function ShopItemPage() {
   return (
     <main className="my-auto px-5 flex justify-center items-center sm:items-start flex-col sm:flex-row gap-2 sm:gap-4 md:gap-8">
@@ -8,7 +14,7 @@ export default function ShopItemPage() {
           <div
             id="item1"
             className={`carousel-item w-full bg-cover`}
-            style={{ backgroundImage: `url('/sambas1.jpeg')` }}
+            style={{ backgroundImage: `url('${url}')` }}
           ></div>
           <div
             id="item2"

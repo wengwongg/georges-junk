@@ -1,27 +1,27 @@
 import ShopItem from "@/components/shop-item";
+import { getAllProducts, getProductImagesByProductId } from "@/index";
+import { Product } from "@prisma/client";
+import { getCldImageUrl } from "next-cloudinary";
 
-export default function ShopPage() {
+export default async function ShopPage() {
+  const products = await getAllProducts();
+  const productImages = await Promise.all(
+    products.map((product) => getProductImagesByProductId(product.id))
+  );
+  const previewImages = productImages.map((images) => images[0].publicId);
+
   return (
     <main className="mb-auto px-5">
       <div className="flex gap-4 flex-wrap justify-center">
-        <ShopItem
-          name="adidas sambas"
-          id={1}
-          price={50}
-          image="/sambas1.jpeg"
-        />
-        <ShopItem
-          name="carharrt jacket"
-          id={2}
-          price={200}
-          image="/carrhart.jpeg"
-        />
-        <ShopItem
-          name="mechanical keyboard"
-          id={2}
-          price={200}
-          image="/keyboard.jpeg"
-        />
+        {products.map((product, index) => (
+          <ShopItem
+            key={product.id}
+            name={product.name}
+            id={product.id}
+            price={product.price}
+            image={getCldImageUrl({ src: previewImages[index] })}
+          />
+        ))}
       </div>
     </main>
   );
