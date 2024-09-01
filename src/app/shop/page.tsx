@@ -2,9 +2,14 @@ import ShopItem from "@/components/shop-item";
 
 export default function ShopPage() {
   return (
-    <main className="mb-auto">
-      <div className="flex gap-4 flex-wrap justify-center px-2">
-        <ShopItem name="adidas sambas" id={1} price={50} image="/sambas.jpeg" />
+    <main className="mb-auto px-5">
+      <div className="flex gap-4 flex-wrap justify-center">
+        <ShopItem
+          name="adidas sambas"
+          id={1}
+          price={50}
+          image="/sambas1.jpeg"
+        />
         <ShopItem
           name="carharrt jacket"
           id={2}

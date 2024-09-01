@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="mb-auto text-center flex flex-col justify-center items-center px-2">
+    <main className="mb-auto text-center flex flex-col justify-center items-center px-5">
       <div className="mb-9">
         <p>welcome to george&apos;s online junk yard :-&#41; </p>
         <br />

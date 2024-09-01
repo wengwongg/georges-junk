@@ -10,7 +10,7 @@ export default function Header() {
         <Link className="hover:underline" href="/shop">
           shop
         </Link>
-        <Link className="hover:underline" href="/">
+        <Link className="hover:underline" href="/cart">
           cart (0)
         </Link>
         <Link className="hover:underline" href="">
