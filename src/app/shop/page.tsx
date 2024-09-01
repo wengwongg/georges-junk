@@ -1,6 +1,5 @@
 import ShopItem from "@/components/shop-item";
 import { getAllProducts, getProductImagesByProductId } from "@/index";
-import { Product } from "@prisma/client";
 import { getCldImageUrl } from "next-cloudinary";
 
 export default async function ShopPage() {

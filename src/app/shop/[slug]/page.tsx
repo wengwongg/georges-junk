@@ -1,81 +1,61 @@
-"use client";
-
+import CarouselButton from "@/components/carousel-button";
+import { getProductByProductId, getProductImagesByProductId } from "@/index";
 import { getCldImageUrl } from "next-cloudinary";
+import { useParams } from "next/navigation";
 
-const url = getCldImageUrl({
-  src: "keao4x2qmjuqcofl45rl",
-});
+export default async function ShopItemPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const slug = params.slug;
 
-export default function ShopItemPage() {
+  const product = await getProductByProductId(Number(slug));
+  const images = await getProductImagesByProductId(Number(slug));
+  const imagePublicIds = images.map((images) => images.publicId);
+  const productNameWithDashes = product?.name.replace(" ", "-");
+
+  const productPoints = product?.description.split(";");
+
   return (
-    <main className="my-auto px-5 flex justify-center items-center sm:items-start flex-col sm:flex-row gap-2 sm:gap-4 md:gap-8">
+    <main className="my-auto px-5 flex justify-center items-center sm:items-start flex-col sm:flex-row gap-2 sm:gap-5 md:gap-8">
       <div className="w-max">
         <div className="carousel snap-none w-[22rem] h-[30rem] rounded border border-gray-500">
-          <div
-            id="item1"
-            className={`carousel-item w-full bg-cover`}
-            style={{ backgroundImage: `url('${url}')` }}
-          ></div>
-          <div
-            id="item2"
-            className={`carousel-item w-full bg-cover`}
-            style={{ backgroundImage: `url('/sambas2.jpeg')` }}
-          ></div>
-          <div
-            id="item3"
-            className={`carousel-item w-full bg-cover`}
-            style={{ backgroundImage: `url('/sambas3.jpeg')` }}
-          ></div>
+          {imagePublicIds.map((publicId, index) => (
+            <div
+              key={index}
+              id={`${productNameWithDashes}-item${index + 1}`}
+              className={`carousel-item w-full bg-cover`}
+              style={{
+                backgroundImage: `url('${getCldImageUrl({ src: publicId })}')`,
+              }}
+            ></div>
+          ))}
         </div>
         <div className="flex w-full justify-center gap-2 py-2">
-          <button
-            onClick={() =>
-              document
-                ?.getElementById("item1")
-                ?.scrollIntoView({ behavior: "smooth", block: "nearest" })
-            }
-            className="btn btn-xs btn-ghost border border-gray-500"
-          >
-            1
-          </button>
-          <button
-            onClick={() =>
-              document
-                ?.getElementById("item2")
-                ?.scrollIntoView({ behavior: "smooth", block: "nearest" })
-            }
-            className="btn btn-xs btn-ghost border border-gray-500"
-          >
-            2
-          </button>
-          <button
-            onClick={() =>
-              document
-                ?.getElementById("item3")
-                ?.scrollIntoView({ behavior: "smooth", block: "nearest" })
-            }
-            className="btn btn-xs btn-ghost border border-gray-500"
-          >
-            3
-          </button>
+          {imagePublicIds.map((_, index) => (
+            <CarouselButton
+              key={index}
+              index={index}
+              productName={productNameWithDashes ?? ""}
+            />
+          ))}
         </div>
       </div>
 
       <div className="w-full sm:w-96">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">adidas sambas</h2>
-          <span className="font-semibold text-green-500 text-xl">$200</span>
+          <h2 className="text-2xl font-bold">{product?.name}</h2>
+          <span className="font-semibold text-green-500 text-xl">
+            £{product?.price}
+          </span>
         </div>
-        <ul className="list-image-[url('/sparkle.svg')] list-inside mb-8">
-          <li>
-            <span className="ml-1">this is a very good shoe</span>
-          </li>
-          <li>
-            <span className="ml-1">this is a very good shoe</span>
-          </li>
-          <li>
-            <span className="ml-1">this is a very good shoe</span>
-          </li>
+        <ul className="list-image-[url('/sparkle.svg')] list-outside mb-8 ml-4 space-y-4">
+          {productPoints?.map((point, index) => (
+            <li key={index} className="pl-1">
+              <span>{point}</span>
+            </li>
+          ))}
         </ul>
         <div className="flex gap-3">
           <button className="btn btn-primary">add to cart</button>

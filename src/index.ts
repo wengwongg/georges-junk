@@ -14,6 +14,22 @@ export async function getAllProducts() {
   }
 }
 
+export async function getProductByProductId(productId: number) {
+  try {
+    const product = await prisma.product.findUnique({
+      where: {
+        id: productId,
+      },
+    });
+    return product;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
 export async function getProductImagesByProductId(productId: number) {
   try {
     const images = await prisma.productImage.findMany({
@@ -21,6 +37,7 @@ export async function getProductImagesByProductId(productId: number) {
         productId,
       },
     });
+
     return images;
   } catch (error) {
     console.error(error);
