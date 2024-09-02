@@ -4,23 +4,25 @@ import React, { useEffect, useState } from "react";
 import CartContext, { CartContextType } from "./cart-context";
 
 interface Props {
-  storeKey: string;
   children: React.ReactNode;
 }
 
-const CartProvider: React.FC<Props> = ({ children, storeKey }) => {
-  const [cartItems, setCartItems] = useState<number[]>([]);
+const CartProvider: React.FC<Props> = ({ children }) => {
+  const [cartItems, setCartItems] = useState<number[]>(() => {
+    const storedCartItems = localStorage.getItem("cart");
+    return storedCartItems ? JSON.parse(storedCartItems) : [];
+  });
 
   useEffect(() => {
-    const storedCartItems = localStorage.getItem(`cart_${storeKey}`);
+    const storedCartItems = localStorage.getItem("cart");
     if (storedCartItems) {
       setCartItems(JSON.parse(storedCartItems));
     }
-  }, [storeKey]);
+  }, []);
 
   useEffect(() => {
-    localStorage.setItem(`cart_${storeKey}`, JSON.stringify(cartItems));
-  }, [cartItems, storeKey]);
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const addToCart = (id: number) => {
     setCartItems((prevItems) => {

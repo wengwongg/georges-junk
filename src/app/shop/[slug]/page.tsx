@@ -7,14 +7,29 @@ import PrimaryButton from "@/components/primary-button";
 import SecondaryButton from "@/components/secondary-button";
 import { Product, ProductImage } from "@prisma/client";
 import { useEffect, useState } from "react";
+import { useCart } from "@/cart-context";
+import Modal from "@/components/modal";
 
 export default function ShopItemPage({ params }: { params: { slug: string } }) {
   const [product, setProduct] = useState<Product | null>(null);
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const { addToCart, cartItems } = useCart();
+
   const slug = params.slug;
   const productId = Number(slug);
+
+  function handleAddToCart() {
+    const modal = document.getElementById(
+      "cart-action-modal"
+    ) as HTMLDialogElement;
+    modal?.showModal();
+
+    setTimeout(() => {
+      addToCart(productId);
+    }, 1000);
+  }
 
   useEffect(() => {
     async function fetchProduct() {
@@ -112,10 +127,23 @@ export default function ShopItemPage({ params }: { params: { slug: string } }) {
           ))}
         </ul>
         <div className="flex gap-3">
-          <PrimaryButton text="add to cart" />
+          <PrimaryButton text="add to cart" onClick={handleAddToCart} />
           <SecondaryButton text="ask about this" />
         </div>
       </div>
+      {!cartItems.includes(productId) ? (
+        <Modal
+          id="cart-action-modal"
+          heading="Item added to cart"
+          message="You have successfully added this item to your cart."
+        />
+      ) : (
+        <Modal
+          id="cart-action-modal"
+          heading="Item already in cart"
+          message="This item is already in your cart."
+        />
+      )}
     </main>
   );
 }

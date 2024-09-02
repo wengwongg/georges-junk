@@ -1,6 +1,11 @@
+"use client";
+
+import { useCart } from "@/cart-context";
 import Link from "next/link";
 
 export default function Header() {
+  const { cartItems } = useCart();
+
   return (
     <header className="flex justify-between items-center p-3 md:p-5 mb-6 border-b border-gray-500">
       <h1 className="text-2xl md:text-3xl justify-self-center">
@@ -11,7 +16,7 @@ export default function Header() {
           shop
         </Link>
         <Link className="hover:underline" href="/cart">
-          cart (0)
+          cart ({cartItems.length})
         </Link>
         <Link className="hover:underline" href="">
           contact me

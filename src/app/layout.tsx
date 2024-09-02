@@ -19,9 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex flex-col justify-between min-h-screen text-black">
-        <Header />
-        {children}
-        <Footer />
+        <CartProvider>
+          <Header />
+          {children}
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );
