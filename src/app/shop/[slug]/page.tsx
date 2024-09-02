@@ -1,43 +1,92 @@
+"use client";
+
 import CarouselButton from "@/components/carousel-button";
-import { getProductByProductId, getProductImagesByProductId } from "@/index";
 import { getCldImageUrl } from "next-cloudinary";
-import { useParams } from "next/navigation";
+import { convertNumberTo2Dp, replaceSpaceWithDashes } from "@/utils";
+import PrimaryButton from "@/components/primary-button";
+import SecondaryButton from "@/components/secondary-button";
+import { Product, ProductImage } from "@prisma/client";
+import { useEffect, useState } from "react";
 
-export default async function ShopItemPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default function ShopItemPage({ params }: { params: { slug: string } }) {
+  const [product, setProduct] = useState<Product | null>(null);
+  const [images, setImages] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const slug = params.slug;
+  const productId = Number(slug);
 
-  const product = await getProductByProductId(Number(slug));
-  const images = await getProductImagesByProductId(Number(slug));
-  const imagePublicIds = images.map((images) => images.publicId);
-  const productNameWithDashes = product?.name.replace(" ", "-");
+  useEffect(() => {
+    async function fetchProduct() {
+      const response = await fetch(`/api/product/${productId}`);
+      console.log(response);
+      const data = await response.json();
+      console.log(data);
+      setProduct(data.data);
+    }
 
-  const productPoints = product?.description.split(";");
+    fetchProduct();
+  }, []);
+
+  useEffect(() => {
+    async function fetchImages() {
+      const response = await fetch(
+        `/api/product-images?productId=${productId}`
+      );
+      const data = await response.json();
+      const fetchedImages = data.data;
+
+      const imageUrls =
+        fetchedImages.length > 0
+          ? fetchedImages.map((image: ProductImage) =>
+              getCldImageUrl({ src: image.publicId })
+            )
+          : ["/notavailable.png"];
+
+      setImages(imageUrls);
+      setLoading(false);
+    }
+
+    fetchImages();
+  }, [product]);
+
+  const productNameWithDashes = replaceSpaceWithDashes(
+    product?.name ?? "Product name not available."
+  );
+
+  const productPoints = product?.description.split(";") ?? [];
+
+  if (loading) {
+    return (
+      <main className="mb-auto px-5">
+        <div className="flex justify-center">
+          <span className="loading loading-spinner loading-sm"></span>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="my-auto px-5 flex justify-center items-center sm:items-start flex-col sm:flex-row gap-2 sm:gap-5 md:gap-8">
       <div className="w-max">
         <div className="carousel snap-none w-[22rem] h-[30rem] rounded border border-gray-500">
-          {imagePublicIds.map((publicId, index) => (
+          {images.map((image, index) => (
             <div
               key={index}
               id={`${productNameWithDashes}-item${index + 1}`}
-              className={`carousel-item w-full bg-cover`}
+              className={`carousel-item w-full bg-cover bg-center`}
               style={{
-                backgroundImage: `url('${getCldImageUrl({ src: publicId })}')`,
+                backgroundImage: `url('${image}')`,
               }}
             ></div>
           ))}
         </div>
         <div className="flex w-full justify-center gap-2 py-2">
-          {imagePublicIds.map((_, index) => (
+          {images.map((_, index) => (
             <CarouselButton
               key={index}
               index={index}
-              productName={productNameWithDashes ?? ""}
+              productName={productNameWithDashes}
             />
           ))}
         </div>
@@ -45,9 +94,14 @@ export default async function ShopItemPage({
 
       <div className="w-full sm:w-96">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">{product?.name}</h2>
+          <h2 className="text-2xl font-bold">
+            {product?.name ?? "Product name not available."}
+          </h2>
           <span className="font-semibold text-green-500 text-xl">
-            £{product?.price}
+            £
+            {product?.price !== undefined
+              ? convertNumberTo2Dp(product?.price)
+              : "Price not available."}
           </span>
         </div>
         <ul className="list-image-[url('/sparkle.svg')] list-outside mb-8 ml-4 space-y-4">
@@ -58,8 +112,8 @@ export default async function ShopItemPage({
           ))}
         </ul>
         <div className="flex gap-3">
-          <button className="btn btn-primary">add to cart</button>
-          <button className="btn btn-secondary">inquire</button>
+          <PrimaryButton text="add to cart" />
+          <SecondaryButton text="ask about this" />
         </div>
       </div>
     </main>
