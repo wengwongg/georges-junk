@@ -55,7 +55,7 @@ export default function Home() {
 
   return (
     <PageWrapper>
-      <TemplateSection className="hero bg-slate-100">
+      <TemplateSection className="hero bg-slate-100 bg-pattern">
         <div className="hero-content space-y-6 flex flex-col">
           <h2 className="text-3xl font-bold">
             welcome to george&apos;s online junk yard :-&#41;{" "}
@@ -79,12 +79,12 @@ export default function Home() {
           </div>
         </div>
       </TemplateSection>
-      <section className="w-full bg-slate-100 border-y border-gray-500">
+      <section className="w-full bg-slate-100 bg-pattern border-y border-gray-700">
         <div className="logos group relative overflow-hidden whitespace-nowrap py-10 [mask-image:_linear-gradient(to_right,_transparent_0,_white_128px,white_calc(100%-128px),_transparent_100%)]">
           {brands} {brands} {brands} {brands}
         </div>
       </section>
-      <TemplateSection className="bg-slate-200">
+      <TemplateSection className="bg-slate-200 bg-pattern">
         <div className="flex flex-col sm:flex-row gap-8 items-center">
           <div className="w-full sm:max-w-min stats stats-vertical bg-neutral-100 shadow rounded-md">
             <Stat

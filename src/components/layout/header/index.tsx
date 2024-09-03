@@ -3,7 +3,7 @@ import HeaderCartLink from "./header-cart-link";
 
 export default function Header() {
   return (
-    <header className="flex justify-between items-center p-4 md:p-5 bg-zinc-800 border-b border-gray-500 text-slate-50">
+    <header className="flex justify-between items-center p-4 md:p-5 bg-zinc-800 border-b border-gray-700 text-slate-50">
       <h1 className="text-2xl md:text-3xl justify-self-center font-bold">
         <Link href="/">george&apos;s junk 💩</Link>
       </h1>

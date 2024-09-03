@@ -13,7 +13,7 @@ export default function ShopItem({ id, name, price, image }: Props) {
     <div className="w-[15rem] text-center transition-all lg:hover:scale-[1.025]">
       <Link href={`/shop/${id}`}>
         <div
-          className={`w-full h-72 rounded mb-2 shadow-lg bg-cover border border-gray-500 bg-center`}
+          className={`w-full h-72 rounded mb-2 shadow-lg bg-cover border border-gray-700 bg-center`}
           style={{ backgroundImage: `url(${image})` }}
         ></div>
       </Link>

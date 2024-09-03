@@ -82,7 +82,7 @@ export default function ShopItemPage({ params }: { params: { slug: string } }) {
   return (
     <main className="my-auto px-5 flex justify-center items-center sm:items-start flex-col sm:flex-row gap-2 sm:gap-5 md:gap-8">
       <div className="w-max">
-        <div className="carousel snap-none w-[22rem] h-[30rem] rounded border border-gray-500">
+        <div className="carousel snap-none w-[22rem] h-[30rem] rounded border border-gray-700">
           {images.map((image, index) => (
             <div
               key={index}
