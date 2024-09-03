@@ -6,3 +6,13 @@ body {
   background-color: #f5f5f5;
   background-image: url("/background.png");
 }
+
+section {
+  background-image: url("/background.png");
+}
+
+@layer utilities {
+  .animation-pause {
+    animation-play-state: paused;
+  }
+}

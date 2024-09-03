@@ -10,6 +10,8 @@ const config: Config = {
     extend: {
       animation: {
         "rainbow-text": "rainbow-text 1s linear infinite",
+        "left-and-right": "left-and-right 2s linear infinite",
+        "slide-left": "slide-left 8s linear infinite",
       },
       keyframes: {
         "rainbow-text": {
@@ -21,6 +23,14 @@ const config: Config = {
           "70%": { color: "indigo" },
           "84%": { color: "purple" },
           "100%": { color: "red" },
+        },
+        "left-and-right": {
+          "0%, 100%": { transform: "translateX(0)" },
+          "50%": { transform: "translateX(-10px)" },
+        },
+        "slide-left": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-100%)" },
         },
       },
     },

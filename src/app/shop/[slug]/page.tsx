@@ -34,9 +34,7 @@ export default function ShopItemPage({ params }: { params: { slug: string } }) {
   useEffect(() => {
     async function fetchProduct() {
       const response = await fetch(`/api/product/${productId}`);
-      console.log(response);
       const data = await response.json();
-      console.log(data);
       setProduct(data.data);
     }
 
