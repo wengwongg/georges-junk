@@ -7,7 +7,7 @@ import PrimaryButton from "@/components/primary-button";
 import SecondaryButton from "@/components/secondary-button";
 import { Product, ProductImage } from "@prisma/client";
 import { useEffect, useState } from "react";
-import { useCart } from "@/cart-context";
+import { useCart } from "@/components/cart/cart-context";
 import Modal from "@/components/modal";
 
 export default function ShopItemPage({ params }: { params: { slug: string } }) {

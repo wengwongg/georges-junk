@@ -1,6 +1,6 @@
 "use client";
 
-import { useCart } from "@/cart-context";
+import { useCart } from "@/components/cart/cart-context";
 import Link from "next/link";
 
 export default function HeaderCartLink() {

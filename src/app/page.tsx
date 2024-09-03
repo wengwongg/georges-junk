@@ -3,7 +3,6 @@ import InfiniteCarouselImage from "@/components/infinite-carousel-image";
 import PageWrapper from "@/components/layout/page-wrapper";
 import TemplateSection from "@/components/section";
 import Stat from "@/components/stat";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -104,29 +103,27 @@ export default function Home() {
             />
           </div>
           <div className="flex gap-4 items-center">
-            <Image
+            <img
               className="transition-all hover:scale-105 hover:cursor-help"
-              src="/georgeinchopperhat.png"
+              src="/george/georgeinchopperhat.png"
               alt="George in Tony Tony Chopper Hat"
               width={200}
-              height={0}
             />
-            <p className="max-w-lg">
+            <div className="max-w-lg">
               <div className="animate-left-and-right inline-block">&larr;</div>{" "}
               here&apos;s a picture of me in a tony tony chopper hat for social
               proof that i won&apos;t just take your money and run away :3
-            </p>
+            </div>
           </div>
         </div>
       </TemplateSection>
       <TemplateSection>
         <div className="flex gap-5 items-center">
-          <Image
+          <img
             className="transition-all hover:scale-105 hover:cursor-help hidden sm:block h-max"
-            src="/funnygeorge.png"
+            src="/george/funnygeorge.png"
             alt="George looking funny"
             width={200}
-            height={0}
           />
           <div className="flex flex-col gap-2 max-w-lg">
             <h3 className="text-xl font-bold">some good questions...</h3>

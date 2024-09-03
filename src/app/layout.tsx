@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import CartProvider from "@/cart-provider";
+import CartProvider from "@/components/cart/cart-provider";
 import { Inconsolata } from "next/font/google";
 
 export const metadata: Metadata = {
