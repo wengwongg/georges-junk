@@ -1,6 +1,7 @@
 import PageWrapper from "@/components/layout/page-wrapper";
-import TemplateSection from "@/components/section";
+import TemplateSection from "@/components/template-section";
 import ShopItem from "@/components/shop-item";
+import { getProductImagesByProductId, getProducts } from "@/queries";
 import { Product, ProductImage } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
 import { getCldImageUrl } from "next-cloudinary";
@@ -8,12 +9,9 @@ import { getCldImageUrl } from "next-cloudinary";
 const prisma = new PrismaClient();
 
 export default async function ShopPage() {
-  // fetch data
-  const products: Product[] = await prisma.product.findMany();
+  const products: Product[] = await getProducts();
   const productImages: ProductImage[][] = await Promise.all(
-    products.map((product: Product) =>
-      prisma.productImage.findMany({ where: { productId: product.id } })
-    )
+    products.map((product: Product) => getProductImagesByProductId(product.id))
   );
   const previewImages: string[] = productImages.map(
     (productImagesForAProduct) =>

@@ -1,7 +1,7 @@
 import AccordianSection from "@/components/accordion-section";
 import InfiniteCarouselImage from "@/components/infinite-carousel-image";
 import PageWrapper from "@/components/layout/page-wrapper";
-import TemplateSection from "@/components/section";
+import TemplateSection from "@/components/template-section";
 import Stat from "@/components/stat";
 import Link from "next/link";
 

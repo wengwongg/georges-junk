@@ -2,16 +2,16 @@
 
 interface Props {
   index: number;
-  productName: string;
+  id: string;
 }
 
-export default function CarouselButton({ index, productName }: Props) {
+export default function CarouselButton({ index, id }: Props) {
   return (
     <button
       key={index}
       onClick={() =>
         document
-          ?.getElementById(`${productName}-item${index + 1}`)
+          ?.getElementById(id)
           ?.scrollIntoView({ behavior: "smooth", block: "nearest" })
       }
       className="btn btn-xs btn-ghost border border-gray-700"
