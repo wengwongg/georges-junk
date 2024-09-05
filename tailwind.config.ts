@@ -12,6 +12,7 @@ const config: Config = {
         "rainbow-text": "rainbow-text 1s linear infinite",
         "left-and-right": "left-and-right 2s linear infinite",
         "slide-left": "slide-left 8s linear infinite",
+        wavy: "wavy 1s ease infinite",
       },
       keyframes: {
         "rainbow-text": {
@@ -31,6 +32,10 @@ const config: Config = {
         "slide-left": {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(-100%)" },
+        },
+        wavy: {
+          "0%, 100%": { top: "0" },
+          "50%": { top: "-15px" },
         },
       },
     },
