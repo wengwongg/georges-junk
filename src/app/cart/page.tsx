@@ -1,10 +1,19 @@
-import CartItem from "@/components/cart-item";
+import PageWrapper from "@/components/layout/page-wrapper";
+import CartSection from "@/components/layout/pages/cart/cart-section";
+import ClearCartButton from "@/components/layout/pages/cart/clear-cart-button";
+import TemplateSection from "@/components/template-section";
 
 export default function CartPage() {
   return (
-    <main className="mb-auto flex items-center flex-col">
-      <h2 className="font-bold text-xl mb-3">Cart</h2>
-      <CartItem />
-    </main>
+    <PageWrapper>
+      <TemplateSection>
+        <div className="mb-5 flex justify-between min-w-[17rem]">
+          <h2 className="font-bold text-2xl">Cart</h2>
+          <ClearCartButton />
+        </div>
+
+        <CartSection />
+      </TemplateSection>
+    </PageWrapper>
   );
 }

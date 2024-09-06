@@ -2,11 +2,10 @@ import CarouselButton from "@/components/carousel-button";
 import { getCldImageUrl } from "next-cloudinary";
 import { convertNumberTo2Dp } from "@/utils";
 import SecondaryButton from "@/components/secondary-button";
-import Modal from "@/components/modal";
 import AddToCartButton from "@/components/layout/pages/shop-item/add-to-cart-button";
 import { getProductById, getProductImagesByProductId } from "@/queries";
 import PageWrapper from "@/components/layout/page-wrapper";
-import Modals from "@/components/layout/pages/shop-item/modals";
+import Modal from "@/components/modal";
 
 export default async function ShopItemPage({
   params,
@@ -80,7 +79,11 @@ export default async function ShopItemPage({
         </div>
       </section>
 
-      <Modals productId={productId} />
+      <Modal
+        id="cart-action-modal"
+        heading="the item is in your cart."
+        message="feel free to look around some more or checkout :)"
+      />
     </PageWrapper>
   );
 }
