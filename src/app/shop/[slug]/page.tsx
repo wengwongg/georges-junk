@@ -51,7 +51,7 @@ export default async function ShopItemPage({
             </div>
           </div>
 
-          <div className="w-full sm:max-w-lg text-left">
+          <div className="w-full sm:max-w-sm text-left">
             <div className="flex justify-between items-center mb-4 gap-8">
               <h2 className="text-2xl font-bold">
                 {product?.name ?? "product name unknown."}

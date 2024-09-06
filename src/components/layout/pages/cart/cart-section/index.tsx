@@ -5,6 +5,7 @@ import { Product, ProductImage } from "@prisma/client";
 import { useEffect, useState } from "react";
 import CartItem from "../../../cart-item";
 import { getCldImageUrl } from "next-cloudinary";
+import ClearCartButton from "../clear-cart-button";
 
 export default function CartSection() {
   const { cartItems } = useCart();
@@ -77,18 +78,25 @@ export default function CartSection() {
   }
 
   return (
-    <div className="flex flex-col gap-10">
-      {products.length !== 0
-        ? products.map((product, index) => (
-            <CartItem
-              key={product.id}
-              text={product.name}
-              image={previewImages[index]}
-              price={product.price}
-              id={product.id}
-            />
-          ))
-        : "You have no items in your cart :("}
+    <div className="flex flex-col gap-2">
+      {products.length !== 0 ? (
+        <>
+          <ClearCartButton />
+          <div className="flex flex-col gap-10">
+            {products.map((product, index) => (
+              <CartItem
+                key={product.id}
+                text={product.name}
+                image={previewImages[index]}
+                price={product.price}
+                id={product.id}
+              />
+            ))}
+          </div>
+        </>
+      ) : (
+        "You have no items in your cart :("
+      )}
     </div>
   );
 }

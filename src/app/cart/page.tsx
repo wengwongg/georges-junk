@@ -7,10 +7,7 @@ export default function CartPage() {
   return (
     <PageWrapper>
       <TemplateSection>
-        <div className="mb-5 flex justify-between min-w-[17rem]">
-          <h2 className="font-bold text-2xl">Cart</h2>
-          <ClearCartButton />
-        </div>
+        <h2 className="font-bold text-2xl mb-3">Cart</h2>
 
         <CartSection />
       </TemplateSection>
