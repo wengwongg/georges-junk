@@ -73,7 +73,6 @@ export default async function ShopItemPage({
                 productId={productId}
                 modalId="cart-action-modal"
               />
-              <SecondaryButton text="ask about this" />
             </div>
           </div>
         </div>

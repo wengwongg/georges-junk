@@ -3,9 +3,10 @@
 import { useCart } from "@/components/cart/cart-context";
 import { Product, ProductImage } from "@prisma/client";
 import { useEffect, useState } from "react";
-import CartItem from "../../../cart-item";
+import CartItem from "../cart-item";
 import { getCldImageUrl } from "next-cloudinary";
 import ClearCartButton from "../clear-cart-button";
+import CheckoutButton from "../checkout-button";
 
 export default function CartSection() {
   const { cartItems } = useCart();
@@ -78,7 +79,7 @@ export default function CartSection() {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-12">
       {products.length !== 0 ? (
         <>
           <ClearCartButton />
@@ -93,6 +94,7 @@ export default function CartSection() {
               />
             ))}
           </div>
+          <CheckoutButton />
         </>
       ) : (
         "You have no items in your cart :("

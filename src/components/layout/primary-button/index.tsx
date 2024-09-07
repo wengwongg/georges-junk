@@ -6,7 +6,7 @@ interface Props {
 export default function PrimaryButton({ text, onClick }: Props) {
   return (
     <button
-      className="btn btn-primary bg-amber-400 border-amber-950 hover:bg-amber-500 hover:border-amber-950 text-black"
+      className="btn btn-primary bg-sky-400 border-sky-950 hover:bg-sky-500 hover:border-sky-950 text-black shadow"
       onClick={onClick}
     >
       {text}

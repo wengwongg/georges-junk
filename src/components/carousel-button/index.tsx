@@ -13,7 +13,7 @@ export default function CarouselButton({ index, id }: Props) {
           .getElementById(id)
           ?.scrollIntoView({ behavior: "smooth", block: "nearest" })
       }
-      className="btn btn-xs btn-ghost border border-gray-700"
+      className="btn btn-xs btn-ghost border border-gray-700 shadow"
     >
       {index + 1}
     </button>

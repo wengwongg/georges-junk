@@ -6,7 +6,7 @@ interface Props {
 export default function SecondaryButton({ text, onClick }: Props) {
   return (
     <button
-      className="btn btn-secondary bg-teal-400 border-teal-950 hover:border-teal-950 hover:bg-teal-500 text-black"
+      className="btn btn-secondary bg-violet-400 border-violet-950 hover:border-violet-950 hover:bg-violet-500 text-black shadow"
       onClick={onClick}
     >
       {text}

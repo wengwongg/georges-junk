@@ -16,7 +16,7 @@ export default function CartItem({ text, image, price, id }: Props) {
     <div className="flex items-center justify-between gap-3 sm:gap-6 flex-col sm:flex-row">
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 items-center">
         <div
-          className={`min-w-40 h-52 bg-cover border border-gray-700 rounded`}
+          className={`min-w-40 h-52 bg-cover border border-gray-700 rounded shadow`}
           style={{ backgroundImage: `url('${image}')` }}
         ></div>
         <div className="sm:text-left w-full max-w-sm">
