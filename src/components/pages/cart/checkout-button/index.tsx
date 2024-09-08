@@ -1,6 +1,6 @@
 "use client";
 
-import PrimaryButton from "@/components/layout/primary-button";
+import PrimaryButton from "@/components/primary-button";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 

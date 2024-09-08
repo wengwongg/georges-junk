@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@/components/cart/cart-context";
-import PrimaryButton from "@/components/layout/primary-button";
+import PrimaryButton from "@/components/primary-button";
 
 interface Props {
   productId: number;

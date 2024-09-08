@@ -1,8 +1,7 @@
 import CarouselButton from "@/components/carousel-button";
 import { getCldImageUrl } from "next-cloudinary";
 import { convertNumberTo2Dp } from "@/utils";
-import SecondaryButton from "@/components/secondary-button";
-import AddToCartButton from "@/components/layout/pages/shop-item/add-to-cart-button";
+import AddToCartButton from "@/components/pages/shop-item/add-to-cart-button";
 import { getProductById, getProductImagesByProductId } from "@/queries";
 import PageWrapper from "@/components/layout/page-wrapper";
 import Modal from "@/components/modal";

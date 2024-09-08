@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import AccordianSection from "@/components/accordion-section";
 import InfiniteCarouselImage from "@/components/infinite-carousel-image";
 import PageWrapper from "@/components/layout/page-wrapper";
