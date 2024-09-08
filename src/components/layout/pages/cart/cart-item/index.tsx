@@ -21,7 +21,7 @@ export default function CartItem({ text, image, price, id }: Props) {
         ></div>
         <div className="sm:text-left w-full max-w-sm">
           <h3 className="font-bold">{text}</h3>
-          <p>Price: ${convertNumberTo2Dp(price)}</p>
+          <p>price: ${convertNumberTo2Dp(price)}</p>
         </div>
       </div>
 
