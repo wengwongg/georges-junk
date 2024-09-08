@@ -1,5 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
+import FileField from "@/components/formik/file-field";
 import PrimaryButton from "@/components/primary-button";
 import { Field, Form, Formik, FormikProps } from "formik";
 
@@ -8,7 +10,7 @@ interface Fields {
   description: string;
   price: number;
   purchased: boolean;
-  files: File[];
+  files: FileList | null;
 }
 
 const initialValues: Fields = {
@@ -16,13 +18,28 @@ const initialValues: Fields = {
   description: "",
   price: 0,
   purchased: false,
-  files: [],
+  files: null,
 };
 
 const handleSubmit = (values: Fields) => {
   setTimeout(() => {
     alert(JSON.stringify(values, null, 2));
   }, 1000);
+};
+
+const displayImages = (files: FileList | null) => {
+  if (!files) return null;
+
+  const images = Array.from(files).map((file) => (
+    <img
+      key={file.name}
+      src={URL.createObjectURL(file)}
+      alt={file.name}
+      className="w-20 h-20 object-cover rounded-md"
+    />
+  ));
+
+  return <div className="flex gap-2">{images}</div>;
 };
 
 export default function CreateProductPage() {
@@ -36,7 +53,7 @@ export default function CreateProductPage() {
         enableReinitialize
       >
         {({ values }) => (
-          <Form className="flex flex-col w-full max-w-lg mx-auto gap-6">
+          <Form className="flex flex-col w-full max-w-lg mx-auto gap-6 mb-12">
             <div className="flex flex-col">
               <label htmlFor="name">name</label>
               <Field
@@ -44,9 +61,9 @@ export default function CreateProductPage() {
                 name="name"
                 placeholder="enter name of product"
                 className="input"
+                required
               />
             </div>
-
             <div className="flex flex-col">
               <label htmlFor="description">description</label>
               <Field
@@ -55,9 +72,9 @@ export default function CreateProductPage() {
                 as="textarea"
                 className="h-28 textarea text-base"
                 placeholder="describe the product with ; as delimiters for bullet points"
+                required
               />
             </div>
-
             <div className="flex flex-col">
               <label htmlFor="price">price</label>
               <Field
@@ -69,7 +86,6 @@ export default function CreateProductPage() {
                 className="input"
               />
             </div>
-
             <div className="flex flex-col">
               <label htmlFor="purchased">purchased?</label>
               <Field
@@ -80,20 +96,15 @@ export default function CreateProductPage() {
               />
             </div>
 
-            <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text text-base">
-                  files for the product
-                </span>
-              </div>
-              <Field
-                id="files"
-                name="files"
-                type="file"
-                className="file-input file-input-bordered"
-                multiple
-              />
-            </label>
+            <FileField
+              name="files"
+              id="files"
+              label="add pictures to display"
+              multiple
+              accept="image/jpeg, image/png"
+            />
+
+            {displayImages(values.files)}
 
             <PrimaryButton text="create product" submit />
           </Form>
