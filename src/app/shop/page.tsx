@@ -3,10 +3,7 @@ import TemplateSection from "@/components/template-section";
 import ShopItem from "@/components/shop-item";
 import { getProductImagesByProductId, getProducts } from "@/queries";
 import { Product, ProductImage } from "@prisma/client";
-import { PrismaClient } from "@prisma/client";
 import { getCldImageUrl } from "next-cloudinary";
-
-const prisma = new PrismaClient();
 
 export default async function ShopPage() {
   const products: Product[] = await getProducts();

@@ -4,8 +4,22 @@ import PageWrapper from "@/components/layout/page-wrapper";
 import TemplateSection from "@/components/template-section";
 import Stat from "@/components/stat";
 import Link from "next/link";
+import { getProducts } from "@/queries";
+import { convertNumberTo2Dp } from "@/utils";
 
-export default function Home() {
+export default async function Home() {
+  const products = await getProducts();
+
+  const totalSold = products.reduce(
+    (acc, product) => (product.purchased ? acc++ : acc),
+    0
+  );
+
+  const totalValuation = products.reduce(
+    (acc, product) => (product.price ? acc + product.price : acc),
+    0
+  );
+
   const brands = (
     <div className="animate-slide-left group-hover:animation-pause inline-block w-max">
       <InfiniteCarouselImage
@@ -87,19 +101,19 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row gap-8 items-center">
           <div className="w-full sm:max-w-min stats stats-vertical bg-neutral-100 shadow rounded-md">
             <Stat
-              title="products sold"
-              value="0"
-              description="pls buy something :("
-            />
-            <Stat
-              title="satisfied customers"
-              value="0"
-              description="pls buy something :("
-            />
-            <Stat
               title="products available"
-              value="3"
+              value={products.length.toString()}
               description="pick something out"
+            />
+            <Stat
+              title="products sold"
+              value={totalSold.toString()}
+              description="yipee!"
+            />
+            <Stat
+              title="total junk valuation"
+              value={`£${convertNumberTo2Dp(totalValuation)}`}
+              description="that's a lot of money"
             />
           </div>
           <div className="flex gap-4 items-center">
