@@ -27,6 +27,7 @@ export default function AdminProductsPage() {
         const data = await response.json();
         const productsData = data.data as Product[];
         setChunkedProducts(chunkArray(productsData, 8));
+        setCurrentBatch(0);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching products: ", error);
@@ -57,7 +58,6 @@ export default function AdminProductsPage() {
             if (confirm("Are you sure you want to delete this product?")) {
               await axios.delete(`/api/product/${product.id}`);
               setRefresh(!refresh);
-              setCurrentBatch(0);
             }
           }}
         />

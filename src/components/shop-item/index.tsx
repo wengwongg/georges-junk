@@ -18,7 +18,7 @@ export default function ShopItem({ id, name, price, image, sold }: Props) {
           style={{ backgroundImage: `url(${image})` }}
         >
           {sold && (
-            <div className="absolute inset-0 bg-black opacity-70 flex items-center justify-center">
+            <div className="absolute inset-0 bg-black opacity-75 flex items-center justify-center">
               <div className="text-red-600 text-3xl font-bold">
                 {"SOLD!".split("").map((char, index) => (
                   <span

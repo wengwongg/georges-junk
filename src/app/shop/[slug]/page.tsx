@@ -5,6 +5,7 @@ import AddToCartButton from "@/components/pages/shop-item/add-to-cart-button";
 import { getProductById, getProductImagesByProductId } from "@/queries";
 import PageWrapper from "@/components/layout/page-wrapper";
 import Modal from "@/components/modal";
+import Carousel from "@/components/pages/shop-item/carousel";
 
 export default async function ShopItemPage({
   params,
@@ -27,27 +28,7 @@ export default async function ShopItemPage({
       <section className="w-full flex justify-center py-10">
         <div className="w-full flex flex-col justify-center items-center sm:flex-row sm:items-start gap-2 sm:gap-5 md:gap-8 mx-4">
           <div className="w-full sm:max-w-sm">
-            <div className="carousel snap-none w-full h-[30rem] rounded border border-gray-700">
-              {productImages.map((productImage, index) => (
-                <div
-                  key={index}
-                  id={`product-${productId}-image-${index + 1}`}
-                  className={`carousel-item w-full bg-cover bg-center`}
-                  style={{
-                    backgroundImage: `url('${productImage}')`,
-                  }}
-                ></div>
-              ))}
-            </div>
-            <div className="flex justify-center gap-2 py-2">
-              {productImages.map((_, index) => (
-                <CarouselButton
-                  key={index}
-                  index={index}
-                  id={`product-${productId}-image-${index + 1}`}
-                />
-              ))}
-            </div>
+            <Carousel images={productImages} />
           </div>
 
           <div className="w-full sm:max-w-sm text-left">
