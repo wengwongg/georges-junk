@@ -5,7 +5,9 @@ import PrimaryButton from "@/components/primary-button";
 import SecondaryButton from "@/components/secondary-button";
 import { chunkArray, convertNumberTo2Dp, truncateString } from "@/utils";
 import { Product } from "@prisma/client";
+import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function AdminProductsPage() {
@@ -13,6 +15,7 @@ export default function AdminProductsPage() {
   const [chunkedProducts, setChunkedProducts] = useState<Product[][]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState("");
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -31,7 +34,7 @@ export default function AdminProductsPage() {
     };
 
     fetchProducts();
-  }, []);
+  }, [refresh]);
 
   const flattenedProducts = chunkedProducts.flat();
   const filteredProducts = flattenedProducts.filter((product) =>
@@ -40,13 +43,24 @@ export default function AdminProductsPage() {
 
   const productRow = (product: Product) => (
     <tr key={product.id} className="border border-gray-600">
-      <td>{product.id}</td>
-      <td>{product.name}</td>
-      <td>{truncateString(product.description, 65)}</td>
-      <td>{convertNumberTo2Dp(product.price)}</td>
-      <td>{product.purchased ? "yes" : "no"}</td>
-      <td className="text-right">
+      <td className="w-1/12">{product.id}</td>
+      <td className="w-3/12">{product.name}</td>
+      <td className="w-4/12">{truncateString(product.description, 65)}</td>
+      <td className="w-2/12">{convertNumberTo2Dp(product.price)}</td>
+      <td className="w-1/12">{product.purchased ? "yes" : "no"}</td>
+      <td className="justify-end flex gap-1">
         <NeutralButton text="edit/view" size="sm" />
+        <NeutralButton
+          text="delete"
+          size="sm"
+          onClick={async () => {
+            if (confirm("Are you sure you want to delete this product?")) {
+              await axios.delete(`/api/product/${product.id}`);
+              setRefresh(!refresh);
+              setCurrentBatch(0);
+            }
+          }}
+        />
       </td>
     </tr>
   );
@@ -116,19 +130,21 @@ export default function AdminProductsPage() {
           </tbody>
         </table>
       </div>
-      <div className="mb-10 space-x-2">
-        {chunkedProducts.map((_, index) => (
-          <button
-            key={index}
-            className={`${
-              index === currentBatch && "btn-active"
-            } btn btn-ghost border-gray-700 btn-sm`}
-            onClick={() => setCurrentBatch(index)}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
+      {searchValue === "" && (
+        <div className="mb-10 space-x-2">
+          {chunkedProducts.map((_, index) => (
+            <button
+              key={index}
+              className={`${
+                index === currentBatch && "btn-active"
+              } btn btn-ghost border-gray-700 btn-sm`}
+              onClick={() => setCurrentBatch(index)}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+      )}
     </>
   );
 }
