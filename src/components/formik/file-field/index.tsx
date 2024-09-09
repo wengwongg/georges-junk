@@ -19,7 +19,7 @@ export default function FileField({ label, id, ...props }: Props) {
 
   return (
     <>
-      <label htmlFor={id} className="mb-[-1.5rem]">
+      <label htmlFor={id} className="mb-[-1.5rem] font-semibold">
         {label}
       </label>
       <InputFile {...field} {...props} id={id} onChange={handleChange} />

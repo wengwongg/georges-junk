@@ -1,16 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import FileField from "@/components/formik/file-field";
+import Modal from "@/components/modal";
 import PrimaryButton from "@/components/primary-button";
-import { Field, Form, Formik, FormikProps } from "formik";
+import axios from "axios";
+import { Field, Form, Formik } from "formik";
+import { useState } from "react";
 
-interface Fields {
+export interface Fields {
   name: string;
   description: string;
   price: number;
   purchased: boolean;
-  files: FileList | null;
 }
 
 const initialValues: Fields = {
@@ -18,31 +19,33 @@ const initialValues: Fields = {
   description: "",
   price: 0,
   purchased: false,
-  files: null,
-};
-
-const handleSubmit = (values: Fields) => {
-  setTimeout(() => {
-    alert(JSON.stringify(values, null, 2));
-  }, 1000);
-};
-
-const displayImages = (files: FileList | null) => {
-  if (!files) return null;
-
-  const images = Array.from(files).map((file) => (
-    <img
-      key={file.name}
-      src={URL.createObjectURL(file)}
-      alt={file.name}
-      className="w-20 h-20 object-cover rounded-md"
-    />
-  ));
-
-  return <div className="flex gap-2">{images}</div>;
 };
 
 export default function CreateProductPage() {
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (
+    values: Fields,
+    { resetForm }: { resetForm: () => void }
+  ) => {
+    const response = await axios.post("/api/products", {
+      name: values.name,
+      description: values.description,
+      price: values.price,
+      purchased: values.purchased,
+    });
+
+    if (response.status === 500) {
+      setError(response.data.message);
+    } else if (response.status === 200) {
+      const modal = document.getElementById(
+        "success_modal"
+      ) as HTMLDialogElement;
+      modal?.showModal();
+      resetForm();
+    }
+  };
+
   return (
     <>
       <h2 className="text-2xl font-bold mb-5">create new product</h2>
@@ -52,10 +55,12 @@ export default function CreateProductPage() {
         onSubmit={handleSubmit}
         enableReinitialize
       >
-        {({ values }) => (
-          <Form className="flex flex-col w-full max-w-lg mx-auto gap-6 mb-12">
+        {() => (
+          <Form className="flex flex-col w-full max-w-lg mx-auto gap-6 mb-10">
             <div className="flex flex-col">
-              <label htmlFor="name">name</label>
+              <label htmlFor="name" className="font-semibold">
+                name
+              </label>
               <Field
                 id="name"
                 name="name"
@@ -64,8 +69,11 @@ export default function CreateProductPage() {
                 required
               />
             </div>
+
             <div className="flex flex-col">
-              <label htmlFor="description">description</label>
+              <label htmlFor="description" className="font-semibold">
+                description
+              </label>
               <Field
                 id="description"
                 name="description"
@@ -75,8 +83,11 @@ export default function CreateProductPage() {
                 required
               />
             </div>
+
             <div className="flex flex-col">
-              <label htmlFor="price">price</label>
+              <label htmlFor="price" className="font-semibold">
+                price
+              </label>
               <Field
                 id="price"
                 name="price"
@@ -86,8 +97,11 @@ export default function CreateProductPage() {
                 className="input"
               />
             </div>
+
             <div className="flex flex-col">
-              <label htmlFor="purchased">purchased?</label>
+              <label htmlFor="purchased" className="font-semibold">
+                purchased?
+              </label>
               <Field
                 id="purchased"
                 name="purchased"
@@ -96,20 +110,17 @@ export default function CreateProductPage() {
               />
             </div>
 
-            <FileField
-              name="files"
-              id="files"
-              label="add pictures to display"
-              multiple
-              accept="image/jpeg, image/png"
-            />
-
-            {displayImages(values.files)}
-
             <PrimaryButton text="create product" submit />
+
+            {error && <p className="text-red-500 text-sm">{error}</p>}
           </Form>
         )}
       </Formik>
+      <Modal
+        id="success_modal"
+        heading="product successfully created"
+        message="create another or go back to index page."
+      />
     </>
   );
 }

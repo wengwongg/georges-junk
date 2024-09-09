@@ -81,13 +81,13 @@ export default function CartSection() {
   const total = products.reduce((acc, product) => acc + product.price, 0);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-7">
       {products.length !== 0 ? (
         <>
           <div className="ml-auto">
             <ClearCartButton />
           </div>
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-5">
             {products.map((product, index) => (
               <CartItem
                 key={product.id}
@@ -98,10 +98,12 @@ export default function CartSection() {
               />
             ))}
           </div>
-          <p className="text-right text-lg">
-            <b>total:</b> £{total}
-          </p>
-          <CheckoutButton priceId={"price_1Pwj0cP4iyIrotyiomZ8coVn"} />
+          <div className="flex flex-col">
+            <p className="text-right text-lg">
+              <b>total:</b> £{total}
+            </p>
+            <CheckoutButton priceId={"price_1Pwj0cP4iyIrotyiomZ8coVn"} />
+          </div>
         </>
       ) : (
         "you have no items in your cart :("
