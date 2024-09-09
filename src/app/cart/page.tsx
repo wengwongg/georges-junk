@@ -6,7 +6,7 @@ export default function CartPage() {
   return (
     <PageWrapper>
       <TemplateSection>
-        <h2 className="font-bold text-2xl mb-3">your cart</h2>
+        <h2 className="font-bold text-2xl mb-4">your cart</h2>
         <CartSection />
       </TemplateSection>
     </PageWrapper>

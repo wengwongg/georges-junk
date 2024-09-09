@@ -81,7 +81,7 @@ export default function CartSection() {
   const total = products.reduce((acc, product) => acc + product.price, 0);
 
   return (
-    <div className="flex flex-col gap-7">
+    <div className="flex flex-col gap-5">
       {products.length !== 0 ? (
         <>
           <div className="ml-auto">
