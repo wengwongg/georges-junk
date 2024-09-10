@@ -65,7 +65,7 @@ export default function CreateProductPage() {
                 id="name"
                 name="name"
                 placeholder="enter name of product"
-                className="input"
+                className="input dark:text-white"
                 required
               />
             </div>
@@ -78,7 +78,7 @@ export default function CreateProductPage() {
                 id="description"
                 name="description"
                 as="textarea"
-                className="h-28 textarea text-base"
+                className="h-28 textarea text-base dark:text-white"
                 placeholder="describe the product with ; as delimiters for bullet points"
                 required
               />
@@ -94,7 +94,7 @@ export default function CreateProductPage() {
                 placeholder="enter price"
                 type="number"
                 step=".01"
-                className="input"
+                className="input dark:text-white"
               />
             </div>
 

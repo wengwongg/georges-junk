@@ -1,13 +1,18 @@
 "use client";
 
+import Modal from "@/components/modal";
 import NeutralButton from "@/components/neutral-button";
 import PrimaryButton from "@/components/primary-button";
 import SecondaryButton from "@/components/secondary-button";
 import { chunkArray, convertNumberTo2Dp, truncateString } from "@/utils";
 import { Product } from "@prisma/client";
 import axios from "axios";
+import {
+  CldUploadWidget,
+  CloudinaryUploadWidgetInfo,
+  CloudinaryUploadWidgetResults,
+} from "next-cloudinary";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function AdminProductsPage() {
@@ -16,6 +21,19 @@ export default function AdminProductsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState("");
   const [refresh, setRefresh] = useState(false);
+
+  const handleSuccessUpload = async (
+    results: CloudinaryUploadWidgetResults
+  ) => {
+    if (!results?.info) {
+      console.error("Error uploading image to cloudinary");
+      return;
+    }
+    const { public_id } = results.info as CloudinaryUploadWidgetInfo;
+    await axios.post("/api/product-images", {
+      publicId: public_id,
+    });
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -77,13 +95,13 @@ export default function AdminProductsPage() {
   return (
     <>
       <h2 className="text-2xl font-bold mb-5">all products</h2>
-      <div className="flex flex-row items-center justify-between w-[60rem] mx-auto mb-3">
+      <div className="flex flex-row items-center justify-between w-full mx-auto mb-3">
         <div className="flex gap-2">
           <input
             id="search"
             type="text"
             placeholder="search product name"
-            className="input w-full max-w-lg input-sm"
+            className="input w-full max-w-lg input-sm dark:text-white"
           />
           <PrimaryButton
             text="search"
@@ -103,14 +121,29 @@ export default function AdminProductsPage() {
             onClick={() => setSearchValue("")}
           />
         </div>
-        <div className="w-max">
+        <div className="w-max flex gap-2">
           <Link href="/admin/products/create">
             <NeutralButton text="create new product" size="sm" />
           </Link>
+
+          <CldUploadWidget
+            uploadPreset="uploads"
+            onSuccess={handleSuccessUpload}
+          >
+            {({ open }) => {
+              return (
+                <NeutralButton
+                  text="upload image to cld"
+                  onClick={() => open()}
+                  size="sm"
+                />
+              );
+            }}
+          </CldUploadWidget>
         </div>
       </div>
       <div className="overflow-x-auto mb-3">
-        <table className="table border border-gray-600 w-[60rem] mx-auto">
+        <table className="table border border-gray-600 w-full mx-auto">
           <thead>
             <tr className="border border-gray-600">
               <th>id</th>
@@ -137,7 +170,7 @@ export default function AdminProductsPage() {
               key={index}
               className={`${
                 index === currentBatch && "btn-active"
-              } btn btn-ghost border-gray-700 btn-sm`}
+              } btn btn-ghost border-gray-700 btn-xs`}
               onClick={() => setCurrentBatch(index)}
             >
               {index + 1}

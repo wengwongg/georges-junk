@@ -35,3 +35,20 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
+export async function POST(req: NextRequest) {
+  const incomingData = await req.json();
+
+  try {
+    await prisma.productImage.create({ data: incomingData });
+    return NextResponse.json(
+      { message: "created product image record" },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: `Error creating product image record: ${error}` },
+      { status: 500 }
+    );
+  }
+}

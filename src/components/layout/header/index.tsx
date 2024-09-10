@@ -12,21 +12,9 @@ export default function Header() {
           shop
         </Link>
         <HeaderCartLink />
-        <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button">
-            admin
-          </div>
-          <ul
-            tabIndex={0}
-            className="dropdown-content menu rounded-md z-[1] w-max p-1 shadow-md bg-gray-800 mt-2"
-          >
-            <li>
-              <a className="hover:underline" href="/admin/products">
-                products
-              </a>
-            </li>
-          </ul>
-        </div>
+        <Link className="hover:underline" href="/admin/products">
+          admin
+        </Link>
       </nav>
     </header>
   );

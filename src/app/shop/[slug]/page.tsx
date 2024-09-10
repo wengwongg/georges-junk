@@ -5,7 +5,7 @@ import AddToCartButton from "@/components/pages/shop-item/add-to-cart-button";
 import { getProductById, getProductImagesByProductId } from "@/queries";
 import PageWrapper from "@/components/layout/page-wrapper";
 import Modal from "@/components/modal";
-import Carousel from "@/components/pages/shop-item/carousel";
+import Carousel from "@/components/pages/shop-item/carousel-tracker";
 
 export default async function ShopItemPage({
   params,

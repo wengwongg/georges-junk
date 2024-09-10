@@ -1,3 +1,5 @@
+"use client";
+
 interface Props {
   text: string;
   onClick?: () => void;
@@ -7,7 +9,7 @@ interface Props {
 export default function NeutralButton({ text, onClick, size }: Props) {
   return (
     <button
-      className={`btn btn-neutral shadow ${size && `btn-${size}`}`}
+      className={`btn btn-neutral shadow ${size ? `btn-${size}` : ""}`}
       onClick={onClick}
     >
       {text}
