@@ -21,6 +21,9 @@ export async function GET(
       where: {
         id: Number(productId),
       },
+      include: {
+        images: true,
+      },
     });
 
     if (!product) {

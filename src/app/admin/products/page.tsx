@@ -157,7 +157,8 @@ export default function AdminProductsPage() {
           <tbody>
             {searchValue !== ""
               ? filteredProducts.map((product) => productRow(product))
-              : chunkedProducts[currentBatch].map((product) =>
+              : chunkedProducts[currentBatch] &&
+                chunkedProducts[currentBatch].map((product) =>
                   productRow(product)
                 )}
           </tbody>

@@ -7,6 +7,7 @@ import CartItem from "../cart-item";
 import { getCldImageUrl } from "next-cloudinary";
 import ClearCartButton from "../clear-cart-button";
 import CheckoutButton from "../checkout-button";
+import { ProductWithImages } from "@/types";
 
 export default function CartSection() {
   const { cartItems } = useCart();
@@ -25,31 +26,20 @@ export default function CartSection() {
               throw new Error(`Failed to fetch data for product of id ${id}.`);
             }
             const data = await response.json();
-            return data.data as Product;
+            return data.data as ProductWithImages;
           })
         );
 
         // get preview images for each product too.
-        const fetchedPreviewImages = await Promise.all(
-          fetchedProducts.map(async (product) => {
-            const response = await fetch(
-              `/api/product-images?productId=${product.id}`
-            );
-            if (!response.ok) {
-              throw new Error(
-                `Failed to fetch preview image for product '${product.name}'.`
-              );
-            }
-            const data = await response.json();
-            const images = data.data as ProductImage[];
+        const fetchedPreviewImages = fetchedProducts.map((product) => {
+          const images = product.images as ProductImage[];
 
-            if (images.length > 0) {
-              return getCldImageUrl({ src: images[0].publicId });
-            } else {
-              return "/notavailable.png";
-            }
-          })
-        );
+          if (images.length > 0) {
+            return getCldImageUrl({ src: images[0].publicId });
+          } else {
+            return "/notavailable.png";
+          }
+        });
 
         setProducts(fetchedProducts);
         setPreviewImages(fetchedPreviewImages);

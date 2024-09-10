@@ -1,17 +1,21 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import { Option } from "@/components/form/multi-select";
+import MultiSelectField from "@/components/formik/multi-select-field";
 import Modal from "@/components/modal";
 import PrimaryButton from "@/components/primary-button";
+import { ProductImage } from "@prisma/client";
 import axios from "axios";
 import { Field, Form, Formik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export interface Fields {
   name: string;
   description: string;
   price: number;
   purchased: boolean;
+  imageIds: string[];
 }
 
 const initialValues: Fields = {
@@ -19,10 +23,30 @@ const initialValues: Fields = {
   description: "",
   price: 0,
   purchased: false,
+  imageIds: [],
 };
 
 export default function CreateProductPage() {
-  const [error, setError] = useState<string | null>(null);
+  const [imageOptions, setImageOptions] = useState<Option[]>([]);
+
+  const fetchImageOptions = async () => {
+    const response = await axios.get("/api/product-images");
+    const data = response.data;
+    const images = data.data;
+
+    setImageOptions(
+      images
+        .filter((image: ProductImage) => image.productId === null)
+        .map((image: ProductImage) => ({
+          label: image.publicId,
+          value: image.id,
+        }))
+    );
+  };
+
+  useEffect(() => {
+    fetchImageOptions();
+  }, []);
 
   const handleSubmit = async (
     values: Fields,
@@ -35,14 +59,23 @@ export default function CreateProductPage() {
       purchased: values.purchased,
     });
 
-    if (response.status === 500) {
-      setError(response.data.message);
-    } else if (response.status === 200) {
+    const resultingProductId = response.data.data.id;
+
+    // also update product image records
+    values.imageIds.forEach(async (imageId) => {
+      await axios.put("/api/product-images", {
+        id: Number(imageId),
+        productId: Number(resultingProductId),
+      });
+    });
+
+    if (response.status === 200) {
       const modal = document.getElementById(
         "success_modal"
       ) as HTMLDialogElement;
       modal?.showModal();
       resetForm();
+      fetchImageOptions();
     }
   };
 
@@ -110,9 +143,17 @@ export default function CreateProductPage() {
               />
             </div>
 
-            <PrimaryButton text="create product" submit />
+            <div className="flex flex-col">
+              <MultiSelectField
+                key={imageOptions.length}
+                label="display images"
+                name="imageIds"
+                id="imageIds"
+                options={imageOptions}
+              />
+            </div>
 
-            {error && <p className="text-red-500 text-sm">{error}</p>}
+            <PrimaryButton text="create product" submit />
           </Form>
         )}
       </Formik>

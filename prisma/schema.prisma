@@ -23,7 +23,7 @@ model Product {
 }
 
 model ProductImage {
-  int Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
   product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
   productId Int?
   publicId String

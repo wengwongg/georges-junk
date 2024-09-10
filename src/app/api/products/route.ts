@@ -10,9 +10,9 @@ export async function POST(req: NextRequest) {
   const incomingData = await req.json();
 
   try {
-    await prisma.product.create({ data: incomingData });
+    const createdProduct = await prisma.product.create({ data: incomingData });
     return NextResponse.json(
-      { message: "created product record" },
+      { message: "created product record", data: { id: createdProduct.id } },
       { status: 200 }
     );
   } catch (error) {
