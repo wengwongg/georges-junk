@@ -8,18 +8,12 @@ import PrimaryButton from "@/components/primary-button";
 import { ProductImage } from "@prisma/client";
 import axios from "axios";
 import { Field, Form, Formik } from "formik";
-import { getCldImageUrl } from "next-cloudinary";
 import { useEffect, useState } from "react";
+import { Fields } from "../../create/page";
+import { useParams } from "next/navigation";
+import { getCldImageUrl } from "next-cloudinary";
 
-export interface Fields {
-  name: string;
-  description: string;
-  price: number;
-  purchased: boolean;
-  imageIds: number[];
-}
-
-const initialValues: Fields = {
+const emptyInitialValues: Fields = {
   name: "",
   description: "",
   price: 0,
@@ -27,17 +21,40 @@ const initialValues: Fields = {
   imageIds: [],
 };
 
-export default function CreateProductPage() {
+export default function EditProductPage() {
+  const [initialValues, setInitialValues] =
+    useState<Fields>(emptyInitialValues);
   const [imageOptions, setImageOptions] = useState<Option[]>([]);
+  const params = useParams();
+
+  const { id } = params;
+
+  const fetchProduct = async () => {
+    const response = await axios.get(`/api/product/${id}`);
+    const product = response.data.data;
+    const initialValues: Fields = {
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      purchased: product.purchased,
+      imageIds: product.images.map((image: ProductImage) => image.id),
+    };
+    setInitialValues(initialValues);
+  };
 
   const fetchImageOptions = async () => {
     const response = await axios.get("/api/product-images");
     const data = response.data;
     const images = data.data;
 
+    // need to have unselected image options as well as current selected image options
     setImageOptions(
       images
-        .filter((image: ProductImage) => image.productId === null)
+        .filter(
+          (image: ProductImage) =>
+            image.productId === null ||
+            initialValues.imageIds.includes(image.id)
+        )
         .map((image: ProductImage) => ({
           label: image.publicId,
           value: image.id,
@@ -45,31 +62,27 @@ export default function CreateProductPage() {
     );
   };
 
+  // fetch product at the start
+  useEffect(() => {
+    fetchProduct();
+  }, []);
+
+  // once the product has been fetched, update imageOptions
   useEffect(() => {
     fetchImageOptions();
-  }, []);
+  }, [initialValues]);
 
   const handleSubmit = async (
     values: Fields,
     { resetForm }: { resetForm: () => void }
   ) => {
-    const response = await axios.post("/api/products", {
+    const response = await axios.put(`/api/product/${id}`, {
       name: values.name,
       description: values.description,
       price: values.price,
       purchased: values.purchased,
+      imageIds: values.imageIds,
     });
-
-    const resultingProductId = response.data.data.id;
-
-    // also update product image records
-    values.imageIds.forEach(async (imageId) => {
-      await axios.put("/api/product-images", {
-        id: Number(imageId),
-        productId: Number(resultingProductId),
-      });
-    });
-
     if (response.status === 200) {
       const modal = document.getElementById(
         "success_modal"
@@ -82,7 +95,7 @@ export default function CreateProductPage() {
 
   return (
     <>
-      <h2 className="text-2xl font-bold mb-5">create new product</h2>
+      <h2 className="text-2xl font-bold mb-5">edit product</h2>
 
       <Formik
         initialValues={initialValues}
@@ -159,14 +172,17 @@ export default function CreateProductPage() {
                     const publicId = imageOptions.find(
                       (option) => Number(option.value) === Number(imageId)
                     )?.label;
-                    return (
-                      <img
-                        key={imageId}
-                        src={getCldImageUrl({ src: publicId || "" })}
-                        alt={publicId}
-                        className="w-16 h-16"
-                      />
-                    );
+
+                    if (publicId) {
+                      return (
+                        <img
+                          key={imageId}
+                          src={getCldImageUrl({ src: publicId })}
+                          alt={publicId}
+                          className="w-16 h-16"
+                        />
+                      );
+                    }
                   })}
                 </div>
               </span>
@@ -178,8 +194,8 @@ export default function CreateProductPage() {
       </Formik>
       <Modal
         id="success_modal"
-        heading="product successfully created"
-        message="create another or go back to index page."
+        heading="product successfully edited"
+        message="make further edits or go back to the index page."
       />
     </>
   );

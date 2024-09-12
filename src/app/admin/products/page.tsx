@@ -1,6 +1,5 @@
 "use client";
 
-import Modal from "@/components/modal";
 import NeutralButton from "@/components/neutral-button";
 import PrimaryButton from "@/components/primary-button";
 import SecondaryButton from "@/components/secondary-button";
@@ -68,7 +67,9 @@ export default function AdminProductsPage() {
       <td className="w-2/12">{convertNumberTo2Dp(product.price)}</td>
       <td className="w-1/12">{product.purchased ? "yes" : "no"}</td>
       <td className="justify-end flex gap-1">
-        <NeutralButton text="edit/view" size="sm" />
+        <Link href={`/admin/products/${product.id}/edit`}>
+          <NeutralButton text="edit/view" size="sm" />
+        </Link>
         <NeutralButton
           text="delete"
           size="sm"

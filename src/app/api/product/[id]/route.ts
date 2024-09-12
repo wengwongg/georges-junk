@@ -79,3 +79,59 @@ export async function DELETE(
     );
   }
 }
+
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const productId = Number(params.id);
+
+  if (!productId) {
+    return NextResponse.json(
+      { error: "Product ID is required" },
+      { status: 400 }
+    );
+  }
+
+  const incomingData = await req.json();
+
+  try {
+    // first update the product record itself
+    await prisma.product.update({
+      where: { id: productId },
+      data: {
+        name: incomingData.name,
+        description: incomingData.description,
+        price: incomingData.price,
+        purchased: incomingData.purchased,
+      },
+    });
+
+    // then update the product image records
+    await prisma.productImage.updateMany({
+      where: { productId },
+      data: {
+        productId: null,
+      },
+    });
+
+    await prisma.productImage.updateMany({
+      where: {
+        id: { in: incomingData.imageIds.map((id: string) => Number(id)) },
+      },
+      data: {
+        productId,
+      },
+    });
+
+    return NextResponse.json(
+      { message: "updated product record" },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: `Error updating product record: ${error}` },
+      { status: 500 }
+    );
+  }
+}

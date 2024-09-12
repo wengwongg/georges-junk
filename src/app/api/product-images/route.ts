@@ -37,7 +37,6 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   const incomingData = await req.json();
-  console.log(incomingData);
 
   try {
     await prisma.productImage.update({

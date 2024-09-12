@@ -1,6 +1,7 @@
 export interface Option {
   value: string;
   label: string;
+  selected?: boolean;
 }
 
 export interface Props {
@@ -20,7 +21,7 @@ export default function MultiSelect({ options, name, id, onChange }: Props) {
       multiple
     >
       {options.map((option, index) => (
-        <option key={index} value={option.value}>
+        <option key={index} value={option.value} selected={option.selected}>
           {option.label}
         </option>
       ))}
